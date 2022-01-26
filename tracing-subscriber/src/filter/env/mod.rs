@@ -10,7 +10,7 @@ mod field;
 
 use crate::{
     filter::LevelFilter,
-    layer::{Context, Layer},
+    layer::{Context, Filter, Layer},
     sync::RwLock,
 };
 use directive::ParseError;
@@ -364,43 +364,8 @@ impl EnvFilter {
             Interest::never()
         }
     }
-}
 
-impl<S: Subscriber> Layer<S> for EnvFilter {
-    fn register_callsite(&self, metadata: &'static Metadata<'static>) -> Interest {
-        if self.has_dynamics && metadata.is_span() {
-            // If this metadata describes a span, first, check if there is a
-            // dynamic filter that should be constructed for it. If so, it
-            // should always be enabled, since it influences filtering.
-            if let Some(matcher) = self.dynamics.matcher(metadata) {
-                let mut by_cs = try_lock!(self.by_cs.write(), else return self.base_interest());
-                by_cs.insert(metadata.callsite(), matcher);
-                return Interest::always();
-            }
-        }
-
-        // Otherwise, check if any of our static filters enable this metadata.
-        if self.statics.enabled(metadata) {
-            Interest::always()
-        } else {
-            self.base_interest()
-        }
-    }
-
-    fn max_level_hint(&self) -> Option<LevelFilter> {
-        if self.dynamics.has_value_filters() {
-            // If we perform any filtering on span field *values*, we will
-            // enable *all* spans, because their field values are not known
-            // until recording.
-            return Some(LevelFilter::TRACE);
-        }
-        std::cmp::max(
-            self.statics.max_level.into(),
-            self.dynamics.max_level.into(),
-        )
-    }
-
-    fn enabled(&self, metadata: &Metadata<'_>, _: Context<'_, S>) -> bool {
+    fn enabled_common<S: Subscriber>(&self, metadata: &Metadata<'_>, _: &Context<'_, S>) -> bool {
         let level = metadata.level();
 
         // is it possible for a dynamic filter directive to enable this event?
@@ -441,6 +406,67 @@ impl<S: Subscriber> Layer<S> for EnvFilter {
         }
 
         false
+    }
+
+    fn callsite_enabled_common(&self, metadata: &'static Metadata<'static>) -> Interest {
+        if self.has_dynamics && metadata.is_span() {
+            // If this metadata describes a span, first, check if there is a
+            // dynamic filter that should be constructed for it. If so, it
+            // should always be enabled, since it influences filtering.
+            if let Some(matcher) = self.dynamics.matcher(metadata) {
+                let mut by_cs = try_lock!(self.by_cs.write(), else return self.base_interest());
+                by_cs.insert(metadata.callsite(), matcher);
+                return Interest::always();
+            }
+        }
+
+        // Otherwise, check if any of our static filters enable this metadata.
+        if self.statics.enabled(metadata) {
+            Interest::always()
+        } else {
+            self.base_interest()
+        }
+    }
+
+    fn max_level_hint_common(&self) -> Option<LevelFilter> {
+        if self.dynamics.has_value_filters() {
+            // If we perform any filtering on span field *values*, we will
+            // enable *all* spans, because their field values are not known
+            // until recording.
+            return Some(LevelFilter::TRACE);
+        }
+        std::cmp::max(
+            self.statics.max_level.into(),
+            self.dynamics.max_level.into(),
+        )
+    }
+}
+
+impl<S: Subscriber> Filter<S> for EnvFilter {
+    fn callsite_enabled(&self, meta: &'static Metadata<'static>) -> Interest {
+        self.callsite_enabled_common(meta)
+    }
+
+    fn max_level_hint(&self) -> Option<LevelFilter> {
+        self.max_level_hint_common()
+    }
+
+    fn enabled(&self, meta: &Metadata<'_>, cx: &Context<'_, S>) -> bool {
+        self.enabled_common(meta, cx)
+    }
+}
+
+impl<S: Subscriber> Layer<S> for EnvFilter {
+    fn register_callsite(&self, metadata: &'static Metadata<'static>) -> Interest {
+        self.callsite_enabled_common(metadata)
+    }
+
+    fn max_level_hint(&self) -> Option<LevelFilter> {
+        self.max_level_hint_common()
+    }
+
+    fn enabled(&self, metadata: &Metadata<'_>, ctx: Context<'_, S>) -> bool {
+        self.enabled_common(metadata, &ctx)
     }
 
     fn on_new_span(&self, attrs: &span::Attributes<'_>, id: &span::Id, _: Context<'_, S>) {
