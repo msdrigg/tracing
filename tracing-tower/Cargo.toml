@@ -1,41 +1,41 @@
 [package]
-name = "tracing-tower"
-version = "0.1.0"
 authors = ["Eliza Weisman <eliza@buoyant.io>"]
-edition = "2018"
-repository = "https://github.com/tokio-rs/tracing"
-homepage = "https://tokio.rs"
+categories = [
+  "development-tools::debugging",
+  "development-tools::profiling",
+  "asynchronous",
+]
 description = """
 Compatibility with the `tower` ecosystem.
 """
-categories = [
-    "development-tools::debugging",
-    "development-tools::profiling",
-    "asynchronous",
-]
+edition = "2018"
+homepage = "https://tokio.rs"
 keywords = ["logging", "tracing"]
 license = "MIT"
+name = "tracing-tower"
+repository = "https://github.com/tokio-rs/tracing"
 rust-version = "1.42.0"
+version = "0.1.0"
 
 [features]
 default = ["tower-layer", "tower-make"]
 tower-make = [
-    "tower_make",
-    "pin-project-lite",
+  "tower_make",
+  "pin-project-lite",
 ]
 
 [dependencies]
-tracing = { path = "../tracing", version = "0.1", default-features = false, features = ["std"] }
-tracing-futures = { version = "0.2.1", path = "../tracing-futures", features = ["std-future"] }
 futures = "0.3"
+http = {version = "0.2", optional = true}
+pin-project-lite = {version = "0.2.4", optional = true}
+tower-layer = {version = "0.3", optional = true}
 tower-service = "0.3"
-tower-layer = { version = "0.3", optional = true }
-tower_make = { package = "tower-make", version = "0.3", optional = true }
-pin-project-lite = { version = "0.2.4", optional = true }
-http = { version = "0.2", optional = true }
+tower_make = {package = "tower-make", version = "0.3", optional = true}
+tracing = {path = "../tracing", default-features = false, features = ["std"]}
+tracing-futures = {path = "../tracing-futures", features = ["std-future"]}
 
 [badges]
-maintenance = { status = "experimental" }
+maintenance = {status = "experimental"}
 
 [package.metadata.docs.rs]
 all-features = true

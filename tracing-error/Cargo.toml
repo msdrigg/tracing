@@ -8,42 +8,42 @@ name = "tracing-error"
 #   - README.md
 # - Update CHANGELOG.md.
 # - Create "v0.2.x" git tag
-version = "0.2.0"
 authors = [
-    "Eliza Weisman <eliza@buoyant.io>",
-    "Jane Lusby <jlusby@yaah.dev>",
-    "Tokio Contributors <team@tokio.rs>"
+  "Eliza Weisman <eliza@buoyant.io>",
+  "Jane Lusby <jlusby@yaah.dev>",
+  "Tokio Contributors <team@tokio.rs>",
+]
+categories = [
+  "development-tools::debugging",
+  "rust-patterns",
+]
+description = """
+Utilities for enriching errors with `tracing`.
+"""
+edition = "2018"
+homepage = "https://tokio.rs"
+keywords = [
+  "tracing",
+  "error-handling",
+  "exception-reporting",
+  "backtrace",
 ]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/tokio-rs/tracing"
-homepage = "https://tokio.rs"
-description = """
-Utilities for enriching errors with `tracing`.
-"""
-categories = [
-    "development-tools::debugging",
-    "rust-patterns"
-]
-keywords = [
-    "tracing",
-    "error-handling",
-    "exception-reporting",
-    "backtrace"
-]
-edition = "2018"
 rust-version = "1.42.0"
+version = "0.2.0"
 
 [features]
 default = ["traced-error"]
 traced-error = []
 
 [dependencies]
-tracing-subscriber = { path = "../tracing-subscriber", version = "0.3", default-features = false, features = ["registry", "fmt"] }
-tracing = { path = "../tracing", version = "0.1.12", default-features = false, features = ["std"] }
+tracing = {path = "../tracing", default-features = false, features = ["std"]}
+tracing-subscriber = {path = "../tracing-subscriber", default-features = false, features = ["registry", "fmt"]}
 
 [badges]
-maintenance = { status = "experimental" }
+maintenance = {status = "experimental"}
 
 [package.metadata.docs.rs]
 all-features = true

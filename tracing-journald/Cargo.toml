@@ -1,26 +1,26 @@
 [package]
-name = "tracing-journald"
-version = "0.2.2"
 authors = ["Benjamin Saunders <ben.e.saunders@gmail.com>"]
+categories = [
+  "development-tools::debugging",
+  "development-tools::profiling",
+]
+description = "rich journald subscriber for `tracing`"
 edition = "2018"
+homepage = "https://tokio.rs"
+keywords = ["tracing", "journald"]
 license = "MIT"
+name = "tracing-journald"
 readme = "README.md"
 repository = "https://github.com/tokio-rs/tracing"
-homepage = "https://tokio.rs"
-description = "rich journald subscriber for `tracing`"
-categories = [
-    "development-tools::debugging",
-    "development-tools::profiling",
-]
-keywords = ["tracing", "journald"]
 rust-version = "1.42.0"
+version = "0.2.2"
 
 [dependencies]
 libc = "0.2.107"
-tracing-core = { path = "../tracing-core", version = "0.1.10" }
-tracing-subscriber = { path = "../tracing-subscriber", version = "0.3" }
+tracing-core = {path = "../tracing-core"}
+tracing-subscriber = {path = "../tracing-subscriber"}
 
 [dev-dependencies]
+serde = {version = "1.0.130", features = ["derive"]}
 serde_json = "1.0.68"
-serde = { version = "1.0.130", features = ["derive"] }
-tracing = { path = "../tracing", version = "0.1" }
+tracing = {path = "../tracing"}

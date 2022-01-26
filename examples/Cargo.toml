@@ -1,9 +1,9 @@
 [package]
-name = "tracing-examples"
-version = "0.0.0"
-publish = false
 edition = "2018"
+name = "tracing-examples"
+publish = false
 rust-version = "1.42.0"
+version = "0.0.0"
 
 [features]
 default = []
@@ -11,36 +11,36 @@ default = []
 [dev-dependencies]
 
 # tracing crates
-tracing = { path = "../tracing", version = "0.1" }
-tracing-core = { path = "../tracing-core", version = "0.1" }
-tracing-error = { path = "../tracing-error" }
-tracing-flame = { path = "../tracing-flame" }
-tracing-tower = { version = "0.1.0", path = "../tracing-tower" }
-tracing-subscriber = { path = "../tracing-subscriber", version = "0.3", features = ["json", "env-filter"] }
-tracing-futures = { version = "0.2.1", path = "../tracing-futures", features = ["futures-01"] }
-tracing-attributes = { path = "../tracing-attributes", version = "0.1.2" }
-tracing-log = { path = "../tracing-log", version = "0.1.1", features = ["env_logger"] }
-tracing-serde = { path = "../tracing-serde" }
-tracing-opentelemetry = { path = "../tracing-opentelemetry" }
-tracing-journald = { path = "../tracing-journald" }
-tracing-appender = { path = "../tracing-appender", version = "0.2" }
+tracing = {path = "../tracing"}
+tracing-appender = {path = "../tracing-appender"}
+tracing-attributes = {path = "../tracing-attributes"}
+tracing-core = {path = "../tracing-core"}
+tracing-error = {path = "../tracing-error"}
+tracing-flame = {path = "../tracing-flame"}
+tracing-futures = {path = "../tracing-futures", features = ["futures-01"]}
+tracing-journald = {path = "../tracing-journald"}
+tracing-log = {path = "../tracing-log", features = ["env_logger"]}
+tracing-opentelemetry = {path = "../tracing-opentelemetry"}
+tracing-serde = {path = "../tracing-serde"}
+tracing-subscriber = {path = "../tracing-subscriber", features = ["json", "env-filter"]}
+tracing-tower = {path = "../tracing-tower"}
 
 # serde example
 serde_json = "1.0"
 
 futures = "0.3"
-tokio = { version = "1.1", features = ["full"] }
+tokio = {version = "1.1", features = ["full"]}
 
 # env-logger example
 env_logger = "0.7"
 
 # tower examples
-tower = { version = "0.4.4", features = ["full"] }
-http = "0.2"
-hyper = { version = "0.14.11", features = ["full"] }
-rand = "0.7"
-bytes = "1"
 argh = "0.1.5"
+bytes = "1"
+http = "0.2"
+hyper = {version = "0.14.11", features = ["full"]}
+rand = "0.7"
+tower = {version = "0.4.4", features = ["full"]}
 
 # sloggish example
 ansi_term = "0.12"
@@ -52,7 +52,7 @@ inferno = "0.10.0"
 tempfile = "3"
 
 # opentelemetry example
-opentelemetry = { version = "0.16", default-features = false, features = ["trace"] }
+opentelemetry = {version = "0.16", default-features = false, features = ["trace"]}
 opentelemetry-jaeger = "0.15"
 
 # fmt examples
@@ -60,7 +60,7 @@ snafu = "0.6.10"
 thiserror = "1.0.26"
 
 # valuable examples 
-valuable = { version = "0.1.0", features = ["derive"] }
+valuable = {version = "0.1.0", features = ["derive"]}
 
 [target.'cfg(tracing_unstable)'.dependencies]
-tracing-core = { path = "../tracing-core", version = "0.1", features = ["valuable"]}
+tracing-core = {path = "../tracing-core", features = ["valuable"]}

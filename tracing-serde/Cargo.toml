@@ -1,29 +1,29 @@
 [package]
-name = "tracing-serde"
-version = "0.1.2"
 authors = ["Tokio Contributors <team@tokio.rs>"]
-license = "MIT"
-edition = "2018"
-repository = "https://github.com/tokio-rs/tracing"
-homepage = "https://tokio.rs"
+categories = [
+  "development-tools::debugging",
+  "development-tools::profiling",
+  "asynchronous",
+  "encoding",
+]
 description = """
 A compatibility layer for serializing trace data with `serde`
 """
-categories = [
-    "development-tools::debugging",
-    "development-tools::profiling",
-    "asynchronous",
-    "encoding",
-]
+edition = "2018"
+homepage = "https://tokio.rs"
 keywords = ["logging", "tracing", "serialization"]
+license = "MIT"
+name = "tracing-serde"
+repository = "https://github.com/tokio-rs/tracing"
 rust-version = "1.42.0"
+version = "0.1.2"
 
 [dependencies]
 serde = "1"
-tracing-core = { path = "../tracing-core", version = "0.1.2"}
+tracing-core = {path = "../tracing-core"}
 
 [dev-dependencies]
 serde_json = "1"
 
 [badges]
-maintenance = { status = "experimental" }
+maintenance = {status = "experimental"}
